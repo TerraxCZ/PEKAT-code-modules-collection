@@ -4,7 +4,8 @@ A curated collection of custom Code Block modules designed to extend the core fu
 
 This repository serves as a centralized hub for pre-built, reusable scripts and custom logic developed to streamline vision inspection workflows and accelerate integration processes.
 
-[![Latest Release](https://img.shields.io/github/v/release/TerraxCZ/PEKAT-code-modules-collection?style=for-the-badge&color=blue)](https://github.com/TerraxCZ/PEKAT-code-modules-collection/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/TerraxCZ/PEKAT-code-modules-collection?style=for-the-badge&color=78faae)](https://github.com/TerraxCZ/PEKAT-code-modules-collection/releases/latest)
+![Last Commit](https://img.shields.io/github/last-commit/TerraxCZ/PEKAT-code-modules-collection?style=for-the-badge&color=78faae)
 
 [👉 Stáhnout nejnovější verzi (.zip)](https://github.com/TerraxCZ/PEKAT-code-modules-collection/releases/latest)
 
@@ -64,3 +65,4 @@ The collection contains both `.ptool` and `.pmodule` Code Block modules. They ar
 ### License
 
 Distributed under the Apache License 2.0. See [`LICENSE`](./LICENSE) for more information.
+![License](https://img.shields.io/github/license/TerraxCZ/PEKAT-code-modules-collection)
