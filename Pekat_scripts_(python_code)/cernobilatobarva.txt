@@ -1,0 +1,7 @@
+import cv2
+import skimage
+import numpy as np
+
+
+def main(context):
+    context['image'] = cv2.cvtColor(context['image'][:, :, 0], cv2.COLOR_BAYER_BG2RGB)

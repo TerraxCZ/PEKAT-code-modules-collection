@@ -1,0 +1,41 @@
+import cv2
+import numpy as np
+
+# =========================
+# ZVOL REŽIM ZDE:
+# =========================
+MODE = "colormap"   # "colormap" nebo "gray3"
+
+# pokud používáš colormap, můžeš změnit styl:
+COLORMAP_TYPE = cv2.COLORMAP_JET
+# další možnosti:
+# cv2.COLORMAP_TURBO
+# cv2.COLORMAP_HOT
+# cv2.COLORMAP_VIRIDIS
+
+def main(context):
+    img = context['image']
+
+    # vezmeme první kanál pokud je HxWx1
+    gray = img[:, :, 0] if img.ndim == 3 else img
+
+    # pokud je Mono10 / Mono12 (uint16), převedeme na 8bit
+    if gray.dtype != np.uint8:
+        gray = cv2.normalize(gray, None, 0, 255, cv2.NORM_MINMAX)
+        gray = gray.astype(np.uint8)
+
+    # =========================
+    # REŽIM 1 – pseudo-barva
+    # =========================
+    if MODE == "colormap":
+        colored = cv2.applyColorMap(gray, COLORMAP_TYPE)
+        context['image'] = cv2.cvtColor(colored, cv2.COLOR_BGR2RGB)
+
+    # =========================
+    # REŽIM 2 – 3kanálová šedá
+    # =========================
+    elif MODE == "gray3":
+        context['image'] = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
+
+    else:
+        raise ValueError("MODE musí být 'colormap' nebo 'gray3'")

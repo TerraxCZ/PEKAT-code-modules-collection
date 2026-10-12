@@ -1,0 +1,96 @@
+Kam skripty ve flow zařadit (typické scénáře)
+
+Řízení toku / podmínky: AI_TRIGGER_V06_TESTED.txt, FLOW_ON_DETECTED.txt, STOP_IF_OK.txt, STOP_IF_NOK.txt, ZASTAVENI_VETVE.txt, RESULT_FILTER.txt
+
+Zpracování obrazu: AUTO_HDR.txt, SOBEL_IMAGE_FILTER.txt, UNSHARP_LAPLAC.txt, ROZSIRENI_SNIMKU_OKRAJE.txt, SJEDNOCENI_2_UNIFIER.txt, CUT_ON_DETECTED.txt
+
+Měření & geometrie: MEASURE_DETECTED_DISTANCE.txt, SJEDNOCENI_2_UNIFIER.txt
+
+Práce s detekcemi: DEL_CLASS.txt, CUT_ON_DETECTED.txt, FLOW_ON_DETECTED.txt
+
+Ukládání & anotace: SAVE_IMAGE_OKNOK_SIMPLE.txt, SAVE_IMAGE_W_ANOT_OKNOK.txt, LOGO_DATE_TIME_TO_IMAGE.txt
+
+I/O & komunikace: OVLADANI_MAJAKU_IFMDV2131.txt, VAIT_FOR_BUTTON.txt
+
+
+
+
+AI_TRIGGER_V06_TESTED.txt
+Stavový „AI trigger“ pro řízení propouštění snímků podle tříd (Classifier/Detector) nebo výsledku OK/NG. Umí debounce (počet snímků), mapování OK/NG→allowed/reset, kolizní politiky, okno CAPTURE a ovládání přes Operator View. Udržuje stav v __main__.
+Práce s kontextem: čte detectedRectangles, result, operatorInput; nastavuje exit.
+
+AUTO_HDR.txt
+Automatická korekce expozice/kontrastu vstupního obrazu (8/16 bit, gray/RGB): robustní „linear stretch“, gamma, CLAHE/„blur-division“, finální blend. Parametry lze měnit přes Operator View.
+Práce s kontextem: čte/nahrazuje image, může zapsat auto_exposure_error.
+
+CUT_ON_DETECTED.txt
+Ořízne obraz podle prvního detekovaného obdélníku. Pokud není přesně 1 detekce, větev ukončí.
+Práce s kontextem: čte detectedRectangles; upraví image; případně nastaví exit.
+
+DEL_CLASS.txt
+„Mazací“ filtr detekcí: odstraní všechny, jen vybrané třídy, nebo naopak ponechá pouze vybrané třídy v context['detectedRectangles'].
+Práce s kontextem: modifikuje detectedRectangles.
+
+FLOW_ON_DETECTED.txt
+Pokračuj jen pokud jsou současně přítomné obě požadované třídy (např. „Prava“ i „Leva“). Jinak nastaví exit=True a větev končí.
+Práce s kontextem: čte detectedRectangles, nastavuje exit.
+
+LOGO_DATE_TIME_TO_IMAGE.txt
+Vloží do snímku logo (PNG s alfou) a/nebo text/datum/čas. Umístění (kotvy, offsety), měřítko a font jsou volitelné; dá se řídit z Operator View.
+Práce s kontextem: čte/nahrazuje image, čte operatorInput.
+
+MEASURE_DETECTED_DISTANCE.txt
+Změří vzdálenost mezi středy dvou zvolených tříd (px → volitelně mm), vykreslí spojnicovou čáru a hodnotu do obrazu. Umí minimální confidence a výběr nejlepších kandidátů.
+Práce s kontextem: čte detectedRectangles; upraví image.
+
+OVLADANI_MAJAKU_IFMDV2131.txt
+Ovládá IO-Link maják IFM DV2131 přes AL1306 (REST). Skládá HEX pro PDOut (siréna / blikání / barva) typicky podle context['result'] a/nebo voleb operátora.
+Práce s kontextem: čte result; vyžaduje requests.
+
+RESULT_FILTER.txt
+Hystereze výsledku: počítá po sobě jdoucí OK/NG snímky (např. „až když padne 2× OK za sebou, prohlásím OK“). Stav drží v globálních proměnných v __main__. Volitelně přepíše context['result'].
+Práce s kontextem: čte/zapisuje result, čte operatorInput.
+
+RESULT_MAKER.txt
+Jednoduchý „override“: nastaví context['result'] = True (OK). Užitočné pro testy/obchvat.
+Práce s kontextem: zapisuje result.
+
+ROZSIRENI_SNIMKU_OKRAJE.txt
+„Obrácený crop“: přidá k obrazu okraje (padding) o zadané pixely a barvě. Bezpečně pro gray/RGB i float/uint8.
+Práce s kontextem: čte/nahrazuje image.
+
+SAVE_IMAGE_OKNOK_SIMPLE.txt
+Ukládá původní snímky do složek OK/NOK s časovým razítkem a názvem top-1 třídy.
+Práce s kontextem: čte image, result, detectedRectangles.
+
+SAVE_IMAGE_W_ANOT_OKNOK.txt
+Ukládá anotované snímky (vykreslí obdélníky; NOK barví červeně) do složek OK/NOK s datovým razítkem.
+Práce s kontextem: čte image, detectedRectangles, result; zapisuje soubory.
+
+SJEDNOCENI_2_UNIFIER.txt
+Najde dvě třídy (Start/End), spočítá středy, obraz natočí tak, aby spojnice byla horizontální (RotateBound + self-check varianty úhlů) a vyřízne pevný výřez kolem středu.
+Práce s kontextem: čte detectedRectangles, upraví image.
+
+SOBEL_IMAGE_FILTER.txt
+Sobelův filtr s volitelným převodem do gray, předrozostřením, kombinací ∇I, prahováním a výstupem ve formátu gray/RGB.
+Práce s kontextem: čte/nahrazuje image.
+
+STOP_IF_NOK.txt
+Ukončí větev (exit=True), pokud je aktuální context['result'] False (NG).
+Práce s kontextem: čte result, nastaví exit.
+
+STOP_IF_OK.txt
+Ukončí větev (exit=True), pokud je aktuální context['result'] True (OK).
+Práce s kontextem: čte result, nastaví exit.
+
+UNSHARP_LAPLAC.txt
+Doostření obrazu: unsharp mask nebo Laplace s auto-adaptací síly dle „Variance of Laplacian“; volitelný debug overlay.
+Práce s kontextem: čte/nahrazuje image.
+
+VAIT_FOR_BUTTON.txt
+Čeká na stav tlačítka/zařízení přes IO-Link AL1306 (/pdin/getdata). Při hodnotě "00" zastaví větev, při "01" nechá pokračovat.
+Práce s kontextem: nastavuje exit; vyžaduje requests.
+
+ZASTAVENI_VETVE.txt
+Okamžité ukončení větve – nastaví context['exit'] = True.
+Práce s kontextem: nastaví exit.
