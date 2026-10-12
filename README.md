@@ -4,6 +4,10 @@ A curated collection of custom Code Block modules designed to extend the core fu
 
 This repository serves as a centralized hub for pre-built, reusable scripts and custom logic developed to streamline vision inspection workflows and accelerate integration processes.
 
+[![Latest Release](https://img.shields.io/github/v/release/TerraxCZ/PEKAT-code-modules-collection?style=for-the-badge&color=blue)](https://github.com/TerraxCZ/PEKAT-code-modules-collection/releases/latest)
+
+[👉 Stáhnout nejnovější verzi (.zip)](https://github.com/TerraxCZ/PEKAT-code-modules-collection/releases/latest)
+
 ---
 
 > ⚠️ **Disclaimer**  
