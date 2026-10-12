@@ -1,0 +1,221 @@
+{
+    "type": "CODE",
+    "module": {
+        "label": "Vypisovator_v03",
+        "id": 28,
+        "note": "Python modul pro PEKAT Vision určený k vykreslování uživatelského textu, časového razítka a průhledného vodoznaku přímo do snímku.          \n------------------------------------------------\nA PEKAT Vision Python module designed to render custom text, timestamp, and a transparent watermark overlay onto the image.",
+        "gpuSettings": [],
+        "softDeletedDate": null,
+        "type": "CODE",
+        "sourceCode": "import base64\r\nfrom datetime import datetime\r\nimport cv2\r\nimport numpy as np\r\n\r\n# Sem vložte váš Base64 řetězec obrázku (např. LOGO_Fablab.png)\r\nHARDCODED_LOGO_B64 = \"\"\"\r\n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\r\n\"\"\"\r\n\r\n# Společný slovník barev pro text i jeho podbarvení (BGR formát)\r\nQUICK_COLOURS = {\r\n    \"Červená\": [0, 0, 255],\r\n    \"Zelená\": [0, 255, 0],\r\n    \"Modrá\": [255, 0, 0],\r\n    \"Akvamarínová (Cyan)\": [255, 255, 0],\r\n    \"Fialová (Magenta)\": [255, 0, 255],\r\n    \"Žlutá\": [0, 255, 255],\r\n    \"Černá\": [0, 0, 0],\r\n    \"Bílá\": [255, 255, 255],\r\n    \"Electric\": [174, 250, 120],\r\n    \"Emerald\": [47, 58, 14],\r\n}\r\n\r\n\r\ndef hex_or_name_to_bgr(val, default=(0, 0, 0)):\r\n    \"\"\"Převede název barvy, HEX řetězec nebo n-tici na BGR hodnotu pro OpenCV.\"\"\"\r\n    if isinstance(val, (list, tuple)) and len(val) == 3:\r\n        return tuple(val)\r\n\r\n    val_str = str(val).strip()\r\n\r\n    # 1. Kontrola z předdefinovaných názvů\r\n    if val_str in QUICK_COLOURS:\r\n        return tuple(QUICK_COLOURS[val_str])\r\n\r\n    # 2. Kontrola HEX formátu (#RRGGBB)\r\n    clean_hex = val_str.lstrip(\"#\")\r\n    if len(clean_hex) == 6:\r\n        try:\r\n            r = int(clean_hex[0:2], 16)\r\n            g = int(clean_hex[2:4], 16)\r\n            b = int(clean_hex[4:6], 16)\r\n            return (b, g, r)\r\n        except ValueError:\r\n            pass\r\n\r\n    return default\r\n\r\n\r\ndef main(context, form):\r\n    # --- Textové nastavení ---\r\n    draw_text = form.get(\"draw_text\", True)\r\n    if isinstance(draw_text, str):\r\n        draw_text = draw_text.lower() in (\"true\", \"1\", \"yes\")\r\n\r\n    custom_text = str(form.get(\"custom_text\", \"Pekat Vision\")) if draw_text else \"\"\r\n\r\n    draw_datetime = form.get(\"draw_datetime\", True)\r\n    if isinstance(draw_datetime, str):\r\n        draw_datetime = draw_datetime.lower() in (\"true\", \"1\", \"yes\")\r\n\r\n    datetime_format = (\r\n        str(form.get(\"datetime_format\", \"%Y-%m-%d %H:%M:%S\"))\r\n        if draw_datetime\r\n        else \"\"\r\n    )\r\n\r\n    corner_form = str(form.get(\"corner_form\", \"Pravý horní\"))\r\n    colour_form = str(form.get(\"colour_form\", \"Zelená\"))\r\n    scale_form = float(form.get(\"scale_form\", 1.0))\r\n    thickness_form = int(form.get(\"thickness_form\", 2))\r\n    offset_x_form = int(form.get(\"offset_x_form\", 20))\r\n    offset_y_form = int(form.get(\"offset_y_form\", 30))\r\n\r\n    # --- Podbarvení textu ---\r\n    highlight_text = form.get(\"highlight_text\", False)\r\n    if isinstance(highlight_text, str):\r\n        highlight_text = highlight_text.lower() in (\"true\", \"1\", \"yes\")\r\n\r\n    text_bg_alpha = float(form.get(\"text_bg_alpha\", 0.5))\r\n    text_bg_colour = str(form.get(\"text_bg_colour\", \"Černá\"))\r\n\r\n    # --- Vodoznak nastavení ---\r\n    draw_watermark = form.get(\"draw_watermark\", True)\r\n    if isinstance(draw_watermark, str):\r\n        draw_watermark = draw_watermark.lower() in (\"true\", \"1\", \"yes\")\r\n\r\n    wm_corner = str(form.get(\"wm_corner\", \"Pravý dolní\"))\r\n    wm_scale = float(form.get(\"wm_scale\", 0.5))\r\n    wm_alpha = float(form.get(\"wm_alpha\", 0.7))\r\n    wm_offset_x = int(form.get(\"wm_offset_x\", 20))\r\n    wm_offset_y = int(form.get(\"wm_offset_y\", 20))\r\n\r\n    # --- Podbarvit vodoznak ---\r\n    highlight_watermark = form.get(\"highlight_watermark\", False)\r\n    if isinstance(highlight_watermark, str):\r\n        highlight_watermark = highlight_watermark.lower() in (\"true\", \"1\", \"yes\")\r\n\r\n    # Dynamické řádky z kódu\r\n    extra_lines = [\r\n        # f\"Počet OK: {context.get('ok_count', 0)}\",\r\n    ]\r\n\r\n    vypisovator(\r\n        context=context,\r\n        text=custom_text,\r\n        datetime_format=datetime_format,\r\n        corner=corner_form,\r\n        colour=colour_form,\r\n        scale=scale_form,\r\n        thickness=thickness_form,\r\n        offset_x=offset_x_form,\r\n        offset_y=offset_y_form,\r\n        extra_lines=extra_lines,\r\n        # Podbarvení textu\r\n        highlight_text=highlight_text,\r\n        text_bg_alpha=text_bg_alpha,\r\n        text_bg_colour=text_bg_colour,\r\n        # Vodoznak\r\n        draw_watermark=draw_watermark,\r\n        wm_corner=wm_corner,\r\n        wm_scale=wm_scale,\r\n        wm_alpha=wm_alpha,\r\n        wm_offset_x=wm_offset_x,\r\n        wm_offset_y=wm_offset_y,\r\n        # Podbarvení vodoznaku\r\n        highlight_watermark=highlight_watermark,\r\n    )\r\n\r\n\r\ndef get_watermark_bbox(img_shape, wm_shape, corner, scale, offset_x, offset_y):\r\n    \"\"\"Pomocná funkce pro výpočet přesných souřadnic umístění vodoznaku na obrázku.\"\"\"\r\n    h_img, w_img = img_shape[:2]\r\n    h_wm, w_wm = wm_shape[:2]\r\n\r\n    if scale > 0 and scale != 1.0:\r\n        wm_w = max(1, int(w_wm * scale))\r\n        wm_h = max(1, int(h_wm * scale))\r\n    else:\r\n        wm_w, wm_h = w_wm, h_wm\r\n\r\n    corner_lower = str(corner).lower()\r\n    is_left = \"levý\" in corner_lower or \"left\" in corner_lower\r\n    is_top = \"horní\" in corner_lower or \"top\" in corner_lower\r\n\r\n    x = offset_x if is_left else (w_img - wm_w - offset_x)\r\n    y = offset_y if is_top else (h_img - wm_h - offset_y)\r\n\r\n    x1, y1 = max(0, int(x)), max(0, int(y))\r\n    x2, y2 = min(w_img, int(x + wm_w)), min(h_img, int(y + wm_h))\r\n\r\n    return x1, y1, x2, y2\r\n\r\n\r\ndef vypisovator(\r\n    context,\r\n    text=\"\",\r\n    datetime_format=\"\",\r\n    corner=\"Pravý horní\",\r\n    colour=\"Zelená\",\r\n    scale=1.0,\r\n    thickness=2,\r\n    offset_x=20,\r\n    offset_y=30,\r\n    extra_lines=None,\r\n    # Podbarvení textu\r\n    highlight_text=False,\r\n    text_bg_alpha=0.5,\r\n    text_bg_colour=\"Černá\",\r\n    # Vodoznak\r\n    draw_watermark=False,\r\n    wm_corner=\"Pravý dolní\",\r\n    wm_scale=0.5,\r\n    wm_alpha=0.7,\r\n    wm_offset_x=20,\r\n    wm_offset_y=20,\r\n    highlight_watermark=False,\r\n):\r\n    if \"image\" not in context or context[\"image\"] is None:\r\n        return\r\n\r\n    image = context[\"image\"]\r\n    h, w = image.shape[:2]\r\n\r\n    # Načtení dekódovaného vodoznaku\r\n    wm_img = None\r\n    if draw_watermark and HARDCODED_LOGO_B64.strip():\r\n        try:\r\n            nparr = np.frombuffer(\r\n                base64.b64decode(HARDCODED_LOGO_B64.strip()), np.uint8\r\n            )\r\n            wm_img = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)\r\n        except Exception:\r\n            pass\r\n\r\n    # -------------------------------------------------------------------------\r\n    # 1. SPODNÍ VRSTVA: PODBARVENÍ VODOZNAKU\r\n    # -------------------------------------------------------------------------\r\n    if highlight_watermark and wm_img is not None:\r\n        rx1, ry1, rx2, ry2 = get_watermark_bbox(\r\n            image.shape,\r\n            wm_img.shape,\r\n            wm_corner,\r\n            wm_scale,\r\n            wm_offset_x,\r\n            wm_offset_y,\r\n        )\r\n\r\n        pad_x, pad_y = 5, 5\r\n        rx1 = max(0, rx1 - pad_x)\r\n        ry1 = max(0, ry1 - pad_y)\r\n        rx2 = min(w, rx2 + pad_x)\r\n        ry2 = min(h, ry2 + pad_y)\r\n\r\n        if rx1 < rx2 and ry1 < ry2:\r\n            rect_overlay = image[ry1:ry2, rx1:rx2].copy()\r\n            rect_color_bgr = (174, 250, 120)  # HEX #78faae\r\n\r\n            cv2.rectangle(\r\n                rect_overlay, (0, 0), (rx2 - rx1, ry2 - ry1), rect_color_bgr, -1\r\n            )\r\n\r\n            alpha_val = max(0.0, min(1.0, float(wm_alpha)))\r\n            blended_rect = cv2.addWeighted(\r\n                image[ry1:ry2, rx1:rx2],\r\n                1.0 - alpha_val,\r\n                rect_overlay,\r\n                alpha_val,\r\n                0,\r\n            )\r\n            image[ry1:ry2, rx1:rx2] = blended_rect\r\n\r\n    # -------------------------------------------------------------------------\r\n    # 2. HORNÍ VRSTVA: VODOZNAK\r\n    # -------------------------------------------------------------------------\r\n    if wm_img is not None:\r\n        apply_watermark(\r\n            image=image,\r\n            watermark=wm_img,\r\n            corner=wm_corner,\r\n            scale=wm_scale,\r\n            alpha=wm_alpha,\r\n            offset_x=wm_offset_x,\r\n            offset_y=wm_offset_y,\r\n        )\r\n\r\n    # -------------------------------------------------------------------------\r\n    # 3. PŘÍPRAVA ŘÁDKŮ TEXTU\r\n    # -------------------------------------------------------------------------\r\n    lines = []\r\n    if text:\r\n        lines.append(text)\r\n\r\n    if datetime_format:\r\n        now = datetime.now()\r\n        try:\r\n            fmt = datetime_format\r\n            if \"%\" not in fmt:\r\n                fmt = (\r\n                    fmt.replace(\"YYYY\", \"%Y\")\r\n                    .replace(\"YY\", \"%y\")\r\n                    .replace(\"MM\", \"%m\")\r\n                    .replace(\"DD\", \"%d\")\r\n                    .replace(\"HH\", \"%H\")\r\n                    .replace(\"mm\", \"%M\")\r\n                    .replace(\"ss\", \"%S\")\r\n                )\r\n            lines.append(now.strftime(fmt))\r\n        except Exception:\r\n            lines.append(now.strftime(\"%Y-%m-%d %H:%M:%S\"))\r\n\r\n    if extra_lines:\r\n        for line in extra_lines:\r\n            if line:\r\n                lines.append(str(line))\r\n\r\n    # -------------------------------------------------------------------------\r\n    # 4. PODBARVENÍ TEXTU A VYKRESLENÍ TEXTŮ\r\n    # -------------------------------------------------------------------------\r\n    if lines:\r\n        font = cv2.FONT_HERSHEY_SIMPLEX\r\n        text_bgr = hex_or_name_to_bgr(colour, default=(0, 255, 0))\r\n\r\n        (sample_w, sample_h), baseline = cv2.getTextSize(\r\n            \"Ay\", font, scale, thickness\r\n        )\r\n        line_height = int((sample_h + baseline) * 1.5)\r\n        total_lines = len(lines)\r\n\r\n        corner_lower = str(corner).lower()\r\n        is_left = \"levý\" in corner_lower or \"left\" in corner_lower\r\n        is_top = \"horní\" in corner_lower or \"top\" in corner_lower\r\n\r\n        # Vypočítáme pozice (x, y) a šířky pro všechny řádky\r\n        line_data = []\r\n        max_line_w = 0\r\n\r\n        for idx, line_str in enumerate(lines):\r\n            (text_w, text_h), _ = cv2.getTextSize(\r\n                line_str, font, scale, thickness\r\n            )\r\n            if text_w > max_line_w:\r\n                max_line_w = text_w\r\n\r\n            x = offset_x if is_left else w - text_w - offset_x\r\n            y = (\r\n                offset_y + (idx + 1) * line_height\r\n                if is_top\r\n                else h - offset_y - (total_lines - 1 - idx) * line_height\r\n            )\r\n\r\n            line_data.append(\r\n                {\r\n                    \"text\": line_str,\r\n                    \"x\": int(x),\r\n                    \"y\": int(y),\r\n                    \"w\": text_w,\r\n                    \"h\": text_h,\r\n                }\r\n            )\r\n\r\n        # --- A. PODBARVENÍ TEXTU (PODKLADOVÝ OBDÉLNÍK) ---\r\n        if highlight_text and text_bg_alpha > 0:\r\n            bg_bgr = hex_or_name_to_bgr(text_bg_colour, default=(0, 0, 0))\r\n            pad_x, pad_y = 8, 6\r\n\r\n            # Výpočet celkového hraničního obdélníku pro všechny řádky textu\r\n            if is_left:\r\n                tx1 = offset_x - pad_x\r\n                tx2 = offset_x + max_line_w + pad_x\r\n            else:\r\n                tx1 = w - offset_x - max_line_w - pad_x\r\n                tx2 = w - offset_x + pad_x\r\n\r\n            min_y = min(item[\"y\"] - item[\"h\"] for item in line_data) - pad_y\r\n            max_y = max(item[\"y\"] for item in line_data) + baseline + pad_y\r\n\r\n            bx1, by1 = max(0, int(tx1)), max(0, int(min_y))\r\n            bx2, by2 = min(w, int(tx2)), min(h, int(max_y))\r\n\r\n            if bx1 < bx2 and by1 < by2:\r\n                crop = image[by1:by2, bx1:bx2].copy()\r\n                rect_overlay = crop.copy()\r\n                cv2.rectangle(\r\n                    rect_overlay,\r\n                    (0, 0),\r\n                    (bx2 - bx1, by2 - by1),\r\n                    bg_bgr,\r\n                    thickness=-1,\r\n                )\r\n\r\n                bg_alpha_val = max(0.0, min(1.0, float(text_bg_alpha)))\r\n                blended_text_bg = cv2.addWeighted(\r\n                    crop, 1.0 - bg_alpha_val, rect_overlay, bg_alpha_val, 0\r\n                )\r\n                image[by1:by2, bx1:bx2] = blended_text_bg\r\n\r\n        # --- B. SAMOTNÉ VYKRESLENÍ TEXTU ---\r\n        for item in line_data:\r\n            cv2.putText(\r\n                image,\r\n                item[\"text\"],\r\n                (item[\"x\"], item[\"y\"]),\r\n                font,\r\n                scale,\r\n                text_bgr,\r\n                thickness,\r\n                cv2.LINE_AA,\r\n            )\r\n\r\n    context[\"image\"] = image\r\n\r\n\r\ndef apply_watermark(image, watermark, corner, scale, alpha, offset_x, offset_y):\r\n    h_img, w_img = image.shape[:2]\r\n    h_wm, w_wm = watermark.shape[:2]\r\n\r\n    # Úprava velikosti vodoznaku\r\n    if scale > 0 and scale != 1.0:\r\n        new_w = max(1, int(w_wm * scale))\r\n        new_h = max(1, int(h_wm * scale))\r\n        wm_resized = cv2.resize(\r\n            watermark, (new_w, new_h), interpolation=cv2.INTER_AREA\r\n        )\r\n    else:\r\n        wm_resized = watermark\r\n\r\n    wm_h, wm_w = wm_resized.shape[:2]\r\n\r\n    # Pozicování podle rohu\r\n    corner_lower = str(corner).lower()\r\n    is_left = \"levý\" in corner_lower or \"left\" in corner_lower\r\n    is_top = \"horní\" in corner_lower or \"top\" in corner_lower\r\n\r\n    x = offset_x if is_left else (w_img - wm_w - offset_x)\r\n    y = offset_y if is_top else (h_img - wm_h - offset_y)\r\n\r\n    x, y = int(x), int(y)\r\n\r\n    # Ořez přetečení přes okraj snímku\r\n    x1, y1 = max(0, x), max(0, y)\r\n    x2, y2 = min(w_img, x + wm_w), min(h_img, y + wm_h)\r\n\r\n    if x1 >= x2 or y1 >= y2:\r\n        return\r\n\r\n    wm_x1 = x1 - x\r\n    wm_y1 = y1 - y\r\n    wm_x2 = wm_x1 + (x2 - x1)\r\n    wm_y2 = wm_y1 + (y2 - y1)\r\n\r\n    wm_crop = wm_resized[wm_y1:wm_y2, wm_x1:wm_x2]\r\n    img_crop = image[y1:y2, x1:x2]\r\n\r\n    alpha = max(0.0, min(1.0, float(alpha)))\r\n\r\n    # Mísení obrázků s ohledem na průhlednost (RGBA vs BGR)\r\n    if wm_crop.shape[2] == 4:\r\n        wm_rgb = wm_crop[:, :, :3]\r\n        wm_a = (wm_crop[:, :, 3] / 255.0) * alpha\r\n        wm_a = np.expand_dims(wm_a, axis=-1)\r\n\r\n        blended = img_crop.astype(float) * (1.0 - wm_a) + wm_rgb.astype(\r\n            float\r\n        ) * wm_a\r\n        image[y1:y2, x1:x2] = blended.astype(np.uint8)\r\n    else:\r\n        blended = cv2.addWeighted(img_crop, 1.0 - alpha, wm_crop, alpha, 0)\r\n        image[y1:y2, x1:x2] = blended",
+        "form": [
+            {
+                "id": 1777375000010,
+                "type": "checkbox",
+                "label": "Vykreslit text",
+                "formKey": "draw_text",
+                "defaultValue": false,
+                "visibility": ""
+            },
+            {
+                "id": 1777375000011,
+                "type": "text",
+                "label": "Text k vypisani",
+                "formKey": "custom_text",
+                "defaultValue": "Pekat Vision",
+                "visibility": "draw_text"
+            },
+            {
+                "id": 1777375000012,
+                "type": "checkbox",
+                "label": "Vykreslit datum/čas",
+                "formKey": "draw_datetime",
+                "defaultValue": false,
+                "visibility": ""
+            },
+            {
+                "id": 1777375000013,
+                "type": "text",
+                "label": "Formát data a času",
+                "formKey": "datetime_format",
+                "defaultValue": "DD-MM-YYYY | HH:mm:ss",
+                "visibility": "draw_datetime"
+            },
+            {
+                "id": 1777375000014,
+                "type": "select",
+                "label": "Roh razítka",
+                "formKey": "corner_form",
+                "defaultValue": "Pravý horní",
+                "options": "Levý horní;Pravý horní;Levý dolní;Pravý dolní",
+                "visibility": ""
+            },
+            {
+                "id": 1777375000015,
+                "type": "select",
+                "label": "Barva",
+                "formKey": "colour_form",
+                "defaultValue": "Zelená",
+                "options": "Červená;Zelená;Modrá;Akvamarínová (Cyan);Fialová (Magenta);Žlutá;Černá;Bílá;Electric;Emerald",
+                "visibility": ""
+            },
+            {
+                "id": 1777375000016,
+                "type": "number",
+                "label": "Velikost písma (scale)",
+                "formKey": "scale_form",
+                "min": 0.1,
+                "max": "10",
+                "defaultValue": "1.0",
+                "visibility": ""
+            },
+            {
+                "id": 1777375000017,
+                "type": "number",
+                "label": "Tloušťka písma (px)",
+                "formKey": "thickness_form",
+                "min": "1",
+                "max": "10",
+                "defaultValue": "2",
+                "visibility": ""
+            },
+            {
+                "id": 1777375000018,
+                "type": "number",
+                "label": "Odsazení razítka X [px]",
+                "formKey": "offset_x_form",
+                "min": "0",
+                "max": "",
+                "defaultValue": "20",
+                "visibility": ""
+            },
+            {
+                "id": 1777375000019,
+                "type": "number",
+                "label": "Odsazení razítka Y [px]",
+                "formKey": "offset_y_form",
+                "min": "0",
+                "max": "",
+                "defaultValue": "20",
+                "visibility": ""
+            },
+            {
+                "id": 1790168954139,
+                "type": "checkbox",
+                "label": "Podbarvit text",
+                "formKey": "highlight_text",
+                "defaultValue": false,
+                "visibility": ""
+            },
+            {
+                "id": 1790169062208,
+                "type": "number",
+                "label": "Průhlednost podbarvení",
+                "formKey": "text_bg_alpha",
+                "min": 0,
+                "max": 1,
+                "defaultValue": 0,
+                "visibility": "highlight_text"
+            },
+            {
+                "id": 1790169111836,
+                "type": "select",
+                "label": "Barva podbarvení",
+                "formKey": "text_bg_colour",
+                "defaultValue": "Černá",
+                "options": "Červená;Zelená;Modrá;Akvamarínová (Cyan);Fialová (Magenta);Žlutá;Černá;Bílá;Electric;Emerald",
+                "visibility": "highlight_text"
+            },
+            {
+                "id": 1790147891824,
+                "type": "checkbox",
+                "label": "Vykreslit vodoznak",
+                "formKey": "draw_watermark",
+                "defaultValue": false,
+                "visibility": ""
+            },
+            {
+                "id": 1790148055280,
+                "type": "select",
+                "label": "Roh vodoznaku",
+                "formKey": "wm_corner",
+                "defaultValue": "Pravý dolní",
+                "options": "Levý horní;Pravý horní;Levý dolní;Pravý dolní",
+                "visibility": "draw_watermark"
+            },
+            {
+                "id": 1790147925746,
+                "type": "number",
+                "label": "Měřítko vodoznaku (scale)",
+                "formKey": "wm_scale",
+                "min": 0.01,
+                "max": 10,
+                "defaultValue": "0.7",
+                "visibility": "draw_watermark"
+            },
+            {
+                "id": 1790148160858,
+                "type": "number",
+                "label": "Průhlednost (0.0 neviditelný – 1.0 plný)",
+                "formKey": "wm_alpha",
+                "min": 0,
+                "max": 1,
+                "defaultValue": "0.7",
+                "visibility": "draw_watermark"
+            },
+            {
+                "id": 1790148209601,
+                "type": "number",
+                "label": "Vodoznak Odsazení X [px]",
+                "formKey": "wm_offset_x",
+                "min": 0,
+                "max": "",
+                "defaultValue": "20",
+                "visibility": "draw_watermark"
+            },
+            {
+                "id": 1790148210223,
+                "type": "number",
+                "label": "Vodoznak Odsazení Y [px]",
+                "formKey": "wm_offset_y",
+                "min": 0,
+                "max": "",
+                "defaultValue": "20",
+                "visibility": "draw_watermark"
+            },
+            {
+                "id": 1790153561246,
+                "type": "checkbox",
+                "label": "Podbarvit vodoznak",
+                "formKey": "highlight_watermark",
+                "defaultValue": false,
+                "visibility": "draw_watermark"
+            }
+        ],
+        "formValues": {
+            "draw_text": true,
+            "custom_text": "Linka 34 | Podlaha zadni dil | sk370",
+            "draw_datetime": true,
+            "datetime_format": "DD-MM-YYYY | HH:mm:ss",
+            "corner_form": "Pravý horní",
+            "colour_form": "Electric",
+            "scale_form": 0.8,
+            "thickness_form": 2.2,
+            "offset_x_form": 20,
+            "offset_y_form": 0,
+            "draw_watermark": true,
+            "wm_corner": "Levý dolní",
+            "wm_scale": 0.5,
+            "wm_alpha": 0.7,
+            "wm_offset_x": 20,
+            "highlight_watermark": true,
+            "highlight_text": false,
+            "text_bg_alpha": 0.8,
+            "text_bg_colour": "Emerald"
+        },
+        "showImagePreview": true,
+        "editDate": 1790169596182,
+        "isActive": true
+    },
+    "version": "4.0.3"
+}
