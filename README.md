@@ -24,9 +24,22 @@ The following Code Block modules are available for download and import into PEKA
 | [`Rectangle_Mazator_v01.ptool`](./Rectangle_Mazator_v01.ptool) | Debug and filtering module for deleting or filtering detected rectangles. |
 | [`Ukladator_v02.ptool`](./Ukladator_v02.ptool) | Saves captured images to the configured filesystem location, including timestamp-based organization. |
 | [`Vyhodnocovator - New.ptool`](./Vyhodnocovator%20-%20New.ptool) | Evaluates whether the configured items are present and returns **OK** when they are, otherwise **NoK**. |
-| [`Vypisovator_v03.ptool`](./Vypisovator_v03.ptool) | Draws custom text, a timestamp, and an optional transparent watermark directly into the image. Supports configurable position, color, scale, thickness, transparency, and background highlighting. |
+| [`Vypisovator_v03.ptool`](./Vypisovator_v03.ptool) | Draws custom text, a timestamp, and an optional transparent watermark directly into the image. Supports configurable position, color, scale, and related display settings. |
 
 > ℹ️ The descriptions are based on the module metadata and may not cover every available configuration option. Open the individual `.ptool` file for the complete module definition and form configuration.
+
+---
+
+## Available `.pmodule` blocks
+
+The following PEKAT Vision Code Block modules are available as `.pmodule` files:
+
+| Module | Description |
+|---|---|
+| [`BUFFER.pmodule`](./BUFFER.pmodule) | Buffers and stores image data for later processing. The module supports configurable buffering behavior and file handling for image sequences. |
+| [`Vykreslovator_v01.pmodule`](./Vykreslovator_v01.pmodule) | Draws visualization overlays, including detected objects and other processing results, directly into the image. |
+
+> ℹ️ The `.pmodule` files contain the complete module definition, including source code and configuration. The descriptions above are concise summaries; inspect each module in PEKAT Vision to review all available settings and behavior.
 
 ---
 
