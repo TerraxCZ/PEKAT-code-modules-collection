@@ -12,7 +12,7 @@ This repository serves as a centralized hub for pre-built, reusable scripts and 
 ---
 
 > ⚠️ **Disclaimer**  
-> This repository is an **unofficial** collection maintained and developed by the **Škoda FabLab** team. It is not officially affiliated with, endorsed by, or supported by PEKAT Vision.
+> This repository is an **unofficial** collection maintained and developed by the **FabLab** team. It is not officially affiliated with, endorsed by, or supported by PEKAT Vision.
 
 ---
 
